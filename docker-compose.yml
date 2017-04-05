@@ -1,0 +1,24 @@
+version: '2'
+services:
+  postgrest:
+    image: begriffs/postgrest:nightly
+    depends_on:
+      - db
+    links:
+      - db:pghost
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./config/postgrest.conf:/etc/postgrest.conf:ro
+
+  db:
+    restart: always
+    image: mdillon/postgis:9.6
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: aiur
